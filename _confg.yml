@@ -1,0 +1,8 @@
+title: Sidpal
+description: Quantitative Finance & C++
+url: "https://sidsince95.github.io"
+baseurl: ""
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+exclude: [README.md, Gemfile, Gemfile.lock]

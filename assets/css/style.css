@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Libre+Baskerville:wght@400;700&display=swap');
+
+:root {
+  --bg: #fafaf8; --text: #1a1a1a; --accent: #e8e8e8; --hover: #4a90e2;
+  --font-main: "Inter", sans-serif; --font-header: "Libre Baskerville", serif;
+}
+
+[data-theme="dark"] {
+  --bg: #1a1a1a; --text: #e8e8e8; --accent: #2d2d2d; --hover: #6fa3ef;
+}
+
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--font-main); max-width: 720px; margin: 0 auto; padding: 100px 20px;
+  line-height: 1.6; transition: 0.3s;
+}
+
+/* Header */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: var(--bg); border-bottom: 1px solid var(--accent);
+  padding: 15px 0; z-index: 999; opacity: 0.95;
+}
+.header-content { max-width: 720px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+.title a { font-family: var(--font-header); font-size: 1.5rem; text-decoration: none; color: var(--text); font-weight: bold; }
+.main-nav a { margin-left: 20px; text-decoration: none; color: #666; font-size: 0.9rem; }
+.main-nav a:hover { color: var(--hover); }
+.theme-toggle { background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-left: 20px; }
+
+/* 3-Column Grid */
+.home-grid { display: flex; gap: 20px; margin-top: 50px; }
+.grid-card {
+  flex: 1; text-align: center; padding: 25px 10px;
+  border: 1px solid var(--accent); border-radius: 8px;
+  text-decoration: none; color: var(--text); transition: 0.2s;
+}
+.grid-card:hover { transform: translateY(-3px); border-color: var(--hover); }
+.grid-card h3 { margin: 0 0 5px 0; font-family: var(--font-header); font-size: 1.1rem; }
+.grid-card p { margin: 0; font-size: 0.85rem; color: #888; }
+
+/* Content & Math */
+h1, h2, h3 { font-family: var(--font-header); margin-top: 1.5em; }
+a { color: var(--text); }
+pre { background: var(--accent); padding: 15px; overflow-x: auto; border-radius: 5px; }
+.MathJax_Display { overflow-x: auto; }
+footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--accent); text-align: center; font-size: 0.85rem; color: #888; }
