@@ -13,7 +13,6 @@
   --text-secondary: #666;
   --link-color: #1a1a1a;
   --hover-color: #4a90e2;
-  --hover-bg: rgba(0, 0, 0, 0.04); /* Subtle background for hover */
 }
 
 [data-theme="dark"] {
@@ -22,8 +21,7 @@
   --text-color: #e8e8e8;            
   --text-secondary: #9b9b9b;        
   --link-color: #e8e8e8;
-  --hover-color: #6fa3ef;
-  --hover-bg: rgba(255, 255, 255, 0.08);           
+  --hover-color: #6fa3ef;           
 }
 
 /* --- BASE STYLES --- */
@@ -82,12 +80,21 @@ body {
 .header-right { display: flex; align-items: center; gap: 20px; }
 .main-nav { display: flex; gap: 28px; font-family: var(--font-main); font-size: 15px; }
 
+/* STANDARD NAV LINK (Use this for animations) */
 .nav-link {
   color: var(--text-secondary); text-decoration: none;
   transition: color 0.2s ease; position: relative;
 }
 .nav-link:hover { color: var(--hover-color); }
+
+/* The Blue Underline Wipe Animation */
+.nav-link::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
+  background-color: var(--hover-color); transition: width 0.2s ease;
+}
+.nav-link:hover::after { width: 100%; }
 .nav-link.active { color: var(--text-color); font-weight: 500; }
+.nav-link.active::after { width: 100%; }
 
 /* Toggle */
 .theme-toggle {
@@ -114,20 +121,9 @@ a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); 
     font-size: 1.2rem;
 }
 
-/* Specific styling for the 3 bottom links */
-.bottom-nav-grid .nav-link {
-    padding: 10px 20px; /* Space for the hover effect */
-    border-radius: 8px; /* Smooth corners for the subtle highlight */
-    transition: all 0.2s ease;
-}
-
-/* The "Selected" Animation on Hover */
+/* Just add BOLD on hover, keep the standard blue underline animation */
 .bottom-nav-grid .nav-link:hover {
-    font-weight: 700; /* Bold */
-    color: var(--hover-color);
-    background-color: var(--hover-bg); /* Subtle box feel without borders */
-    transform: translateY(-3px); /* The "Lift" effect */
-    text-decoration: none; /* No underline */
+    font-weight: 700;
 }
 
 /* Footer */
