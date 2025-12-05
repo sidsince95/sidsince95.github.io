@@ -5,16 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 <body>
 
 <header class="site-header">
   <div class="header-content">
     <div class="title">
-      <h1><a href="{{ '/' | relative_url }}" class="title-link">Sidpal</a></h1>
+      <h1>
+        <a href="{{ '/' | relative_url }}" class="title-link">
+          Sidpal
+          <svg class="verified-badge" viewBox="0 0 22 22" aria-label="Verified">
+            <path fill="#1DA1F2" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
+          </svg>
+        </a>
+      </h1>
     </div>
     
     <div class="header-right">
@@ -26,7 +31,8 @@
       </nav>
       
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <span id="icon-text">🌗</span> 
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"/></svg>
       </button>
     </div>
   </div>
@@ -37,22 +43,43 @@
 </main>
   
 <footer>
-  <p>Siddhartha Palavajjhala | QCF @ Georgia Tech</p>
-  <p><a href="https://github.com/sidsince95">GitHub</a></p>
+  <p>Made with curiosity and caffeine ☕✨</p>
 </footer>
 
 <script>
-  // Simple Theme Toggle Logic
+  // Original Theme Logic
   const toggle = document.getElementById('theme-toggle');
+  const moonIcon = document.getElementById('moon-icon');
+  const sunIcon = document.getElementById('sun-icon');
   const html = document.documentElement;
+
   const currentTheme = localStorage.getItem('theme') || 'light';
   html.setAttribute('data-theme', currentTheme);
+
+  if (currentTheme === 'dark') {
+      moonIcon.style.display = 'none';
+      sunIcon.style.display = 'block';
+  }
 
   toggle.addEventListener('click', () => {
     const theme = html.getAttribute('data-theme');
     const newTheme = theme === 'light' ? 'dark' : 'light';
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    
+    if (newTheme === 'dark') {
+       moonIcon.style.display = 'none';
+       sunIcon.style.display = 'block';
+    } else {
+       moonIcon.style.display = 'block';
+       sunIcon.style.display = 'none';
+    }
+  });
+
+  // Active Link Logic
+  const path = window.location.pathname;
+  document.querySelectorAll('.nav-link').forEach(link => {
+    if(link.getAttribute('href') === path) link.classList.add('active');
   });
 </script>
 </body>
