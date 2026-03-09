@@ -205,10 +205,9 @@ footer { margin-top: 120px; padding-top: 40px; border-top: 1px solid var(--accen
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: var(--text-secondary);
   line-height: 1.25;
   margin: 2.2rem 0 1rem 0;
-  color: var(--text-color);
 }
 
 .reading-list-page ul {
