@@ -146,8 +146,50 @@ a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); 
     font-size: 1.2rem;
 }
 
-/* Footer */
-footer { margin-top: 120px; padding-top: 40px; border-top: 1px solid var(--accent-color); font-size: 14px; color: var(--text-secondary); text-align: center; }
+footer {
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top: 1px solid var(--accent-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-social a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.footer-social a:hover {
+  color: var(--text-color);
+}
+
+.footer-tagline {
+  font-family: var(--font-header);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+  opacity: 0.7;
+}
 
 /* MathJax */
 .MathJax_Display { overflow-x: auto; overflow-y: hidden; }
