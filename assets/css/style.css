@@ -28,9 +28,10 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-font-smoothing: antialiased; }
 
+/* CHANGE 1: body no longer constrains width — it's just a canvas */
 body {
-  margin: 0; padding: 100px 20px 60px;
-  max-width: 680px; margin-left: auto; margin-right: auto;
+  margin: 0;
+  padding: 0;
   font-family: var(--font-main); font-size: 17px; font-weight: 400;
   line-height: 1.65; color: var(--text-color);
   background-color: var(--background-color);
@@ -48,7 +49,7 @@ body {
 .header-content {
   max-width: 680px; margin: 0 auto; padding: 20px;
   display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: nowrap; /* Prevent any wrapping on desktop */
+  flex-wrap: nowrap;
 }
 
 /* Glassmorphism Effect */
@@ -137,6 +138,15 @@ p { margin: 1.2em 0; }
 a { color: var(--text-color); text-decoration: underline; text-decoration-color: var(--accent-color); text-underline-offset: 3px; }
 a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); }
 
+/* CHANGE 2: main now owns the centered column + padding + animation */
+main {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 100px 20px 60px;
+  animation: fadeUp 0.4s ease both;
+}
+
 /* --- HOMEPAGE LAYOUT --- */
 .bottom-nav-grid {
     display: flex;
@@ -146,10 +156,10 @@ a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); 
     font-size: 1.2rem;
 }
 
+/* CHANGE 3: footer spans full width, content centered inside */
 footer {
-  margin-top: 120px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  margin-top: 0;
+  padding: 40px 20px;
   border-top: 1px solid var(--accent-color);
   text-align: center;
   display: flex;
@@ -157,9 +167,6 @@ footer {
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .footer-social {
@@ -201,12 +208,10 @@ footer {
 
 /* ============================================================
    MOBILE — max-width: 600px
-   Only show: [Sid Pal ✓]  ............  [🌙]
-   Nav links are hidden completely. Tap title → goes home.
    ============================================================ */
 @media (max-width: 600px) {
 
-  body { padding: 80px 16px 40px; }
+  main { padding: 80px 16px 40px; }
 
   .header-content {
     padding: 16px;
@@ -215,12 +220,8 @@ footer {
     justify-content: space-between;
   }
 
-  /* Hide navigation entirely on mobile */
-  .main-nav {
-    display: none;
-  }
+  .main-nav { display: none; }
 
-  /* Flatten header-right so toggle sits flush */
   .header-right {
     display: flex;
     align-items: center;
@@ -239,13 +240,13 @@ footer {
     margin-left: 5px;
   }
 
-  /* Scrolled state: glass blur, no size change needed since nav is already gone */
   .site-header.scrolled .header-content {
     padding: 12px 16px;
   }
 
   .bottom-nav-grid { flex-direction: column; gap: 20px; text-align: center; }
 }
+
 /* --- READING LIST PAGE --- */
 
 .reading-list-page {
@@ -295,10 +296,6 @@ footer {
 }
 
 /* --- PAGE ENTRY ANIMATION --- */
-main {
-  animation: fadeUp 0.4s ease both;
-}
-
 @keyframes fadeUp {
   from {
     opacity: 0;
