@@ -87,6 +87,20 @@ body {
   color: var(--text-secondary); text-decoration: none;
   transition: color 0.2s ease; 
   position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hidden bold ghost — reserves width so hover never shifts layout */
+.nav-link::before {
+  content: attr(data-text);
+  font-weight: 700;
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* Hover: Turn Blue and Bold */
