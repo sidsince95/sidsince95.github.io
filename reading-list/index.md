@@ -3,19 +3,29 @@ layout: default
 title: Reading List
 ---
 
-# Reading List
+<div class="reading-list-page">
 
-## Books
+<h1>Reading List</h1>
 
-- The Mathematics of Financial Derivatives
-- An Introduction to the Mathematics of Financial Derivatives
+<h2>Books</h2>
 
-## Articles
+<ul>
+  <li><a href="#">The Mathematics of Financial Derivatives</a></li>
+  <li><a href="#">An Introduction to the Mathematics of Financial Derivatives</a></li>
+</ul>
 
-- —
-- —
+<h2>Articles</h2>
 
-## Research Papers
+<ul>
+  <li>—</li>
+  <li>—</li>
+</ul>
 
-- —
-- —
+<h2>Research Papers</h2>
+
+<ul>
+  <li>—</li>
+  <li>—</li>
+</ul>
+
+</div>
