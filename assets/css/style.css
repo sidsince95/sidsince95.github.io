@@ -149,6 +149,7 @@ a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); 
 footer {
   margin-top: 120px;
   padding-top: 40px;
+  padding-bottom: 40px;
   border-top: 1px solid var(--accent-color);
   text-align: center;
   display: flex;
@@ -156,6 +157,9 @@ footer {
   align-items: center;
   gap: 10px;
   width: 100%;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .footer-social {
