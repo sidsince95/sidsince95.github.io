@@ -28,7 +28,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-font-smoothing: antialiased; }
 
-/* CHANGE 1: body no longer constrains width — it's just a canvas */
+/* Option B: body is full viewport, no max-width */
 body {
   margin: 0;
   padding: 0;
@@ -93,7 +93,6 @@ body {
   align-items: center;
 }
 
-/* Hidden bold ghost — reserves width so hover never shifts layout */
 .nav-link::before {
   content: attr(data-text);
   font-weight: 700;
@@ -104,13 +103,11 @@ body {
   user-select: none;
 }
 
-/* Hover: Turn Blue and Bold */
 .nav-link:hover { 
   color: var(--hover-color); 
   font-weight: 700; 
 }
 
-/* The Blue Underline Wipe */
 .nav-link::after {
   content: ''; 
   position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
@@ -138,7 +135,7 @@ p { margin: 1.2em 0; }
 a { color: var(--text-color); text-decoration: underline; text-decoration-color: var(--accent-color); text-underline-offset: 3px; }
 a:hover { color: var(--hover-color); text-decoration-color: var(--hover-color); }
 
-/* CHANGE 2: main now owns the centered column + padding + animation */
+/* main owns the centered column */
 main {
   max-width: 680px;
   margin-left: auto;
@@ -149,15 +146,16 @@ main {
 
 /* --- HOMEPAGE LAYOUT --- */
 .bottom-nav-grid {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 80px;
-    font-family: var(--font-header);
-    font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+  font-family: var(--font-header);
+  font-size: 1.2rem;
 }
 
-/* CHANGE 3: footer spans full width, content centered inside */
+/* footer spans full viewport width, content centered inside */
 footer {
+  width: 100%;
   margin-top: 0;
   padding: 40px 20px;
   border-top: 1px solid var(--accent-color);
@@ -166,7 +164,6 @@ footer {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  width: 100%;
 }
 
 .footer-social {
@@ -206,9 +203,7 @@ footer {
 /* MathJax */
 .MathJax_Display { overflow-x: auto; overflow-y: hidden; }
 
-/* ============================================================
-   MOBILE — max-width: 600px
-   ============================================================ */
+/* --- MOBILE --- */
 @media (max-width: 600px) {
 
   main { padding: 80px 16px 40px; }
@@ -248,7 +243,6 @@ footer {
 }
 
 /* --- READING LIST PAGE --- */
-
 .reading-list-page {
   padding-top: 0.5rem;
 }
