@@ -186,8 +186,7 @@ footer {
 
 .footer-tagline {
   font-family: var(--font-header);
-  font-size: 13px;
-  font-style: italic;
+  font-size: 16px;
   color: var(--text-secondary);
   margin: 0;
   letter-spacing: 0.04em;
