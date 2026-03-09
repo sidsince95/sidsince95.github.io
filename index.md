@@ -13,7 +13,7 @@ I am using this blog mainly as repo to share my learnings, projects I am working
 
 
 <div class="bottom-nav-grid">
-    <a href="./projects" class="nav-link">Projects</a>
-    <a href="./blog" class="nav-link">Blog Posts</a>
-    <a href="./reading-list" class="nav-link">Reading List</a>
+    <a href="./projects" class="nav-link" data-text="Projects">Projects</a>
+    <a href="./blog" class="nav-link" data-text="Blog Posts">Blog Posts</a>
+    <a href="./reading-list" class="nav-link" data-text="Reading List">Reading List</a>
 </div>
