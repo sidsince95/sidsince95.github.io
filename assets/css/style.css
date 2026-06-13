@@ -70,10 +70,10 @@ body {
 /* Title */
 .title h1 {
   font-family: var(--font-header); font-size: 28px; font-weight: 400;
-  margin: 0; letter-spacing: 0.5px; white-space: nowrap;
+  margin: 0; letter-spacing: 0.5px; white-space: nowrap; line-height: 1;
 }
 .title-link {
-  position: relative; display: inline-flex; align-items: center;
+  position: relative; display: flex; align-items: center;
   text-decoration: none; color: var(--text-color); transition: opacity 0.2s ease;
 }
 .title-link:hover { opacity: 0.6; }
