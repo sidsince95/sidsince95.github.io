@@ -5,7 +5,7 @@ title: Reading List
 
 <div class="reading-list-page">
 
-<a href="/" class="back-link">&#8249; Back</a>
+<a href="/" class="back-link"><span class="back-chevron">&#8249;</span> Back</a>
 
 <h1>Reading List</h1>
 

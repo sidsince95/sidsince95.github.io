@@ -130,11 +130,12 @@ body {
   background-color: var(--hover-color); transition: width 0.2s ease;
 }
 
-.nav-link.active { color: var(--hover-color); font-weight: 700; }
+.nav-link.active { color: var(--hover-color); font-weight: 700; text-decoration: none; }
+.nav-link.active::after { width: 0; }
 
 /* Toggle */
 .theme-toggle {
-  background: none; border: none; cursor: pointer; padding: 8px;
+  background: none; border: none; padding: 8px;
   display: flex; align-items: center; justify-content: center;
   color: var(--text-color); transition: all 0.3s ease;
   border-radius: 50%; width: 36px; height: 36px;
@@ -304,9 +305,11 @@ footer {
 
 .back-link {
   display: inline-block; font-size: 13px; font-family: var(--font-main);
-  color: var(--hover-color); text-decoration: none; margin-bottom: 1.2rem; letter-spacing: 0.02em;
+  color: var(--hover-color); text-decoration: none; margin-bottom: 2.5rem; letter-spacing: 0.02em;
 }
-.back-link:hover { color: #D97757; }
+.back-link:hover { color: #D97757; text-decoration: none; }
+.back-chevron { display: inline-block; transition: transform 0.2s ease; }
+.back-link:hover .back-chevron { transform: translateX(-3px); }
 
 /* --- PAGE ENTRY ANIMATION --- */
 @keyframes fadeUp {
