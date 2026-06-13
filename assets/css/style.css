@@ -130,8 +130,7 @@ body {
   background-color: var(--hover-color); transition: width 0.2s ease;
 }
 
-.nav-link.active { color: var(--text-color); font-weight: 500; }
-.nav-link.active::after { width: 100%; }
+.nav-link.active { color: var(--hover-color); font-weight: 700; }
 
 /* Toggle */
 .theme-toggle {

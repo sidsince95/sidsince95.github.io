@@ -29,3 +29,14 @@ title: Reading List
 </ul>
 
 </div>
+
+<script>
+document.querySelectorAll('.reading-list-page ul').forEach(ul => {
+  const allEmpty = Array.from(ul.querySelectorAll('li')).every(li => li.textContent.trim() === '—');
+  if (allEmpty) {
+    ul.style.display = 'none';
+    const prev = ul.previousElementSibling;
+    if (prev && prev.tagName === 'H2') prev.style.display = 'none';
+  }
+});
+</script>
