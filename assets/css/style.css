@@ -81,7 +81,19 @@ body {
 .verified-badge {
   width: 18px; height: 18px; margin-left: 6px;
   vertical-align: middle; display: inline-block; flex-shrink: 0;
+  transition: opacity 0.3s ease, width 0.3s ease, margin-left 0.3s ease;
 }
+
+/* Wordmark collapse on scroll */
+.wm-text {
+  display: inline-block; overflow: hidden; max-width: 100px; opacity: 1;
+  transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  white-space: nowrap;
+}
+.wm-alpha { display: inline-block; transition: font-size 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.site-header.compact .wm-text { max-width: 0; opacity: 0; }
+.site-header.compact .wm-alpha { font-size: 34px; }
+.site-header.compact .verified-badge { opacity: 0; width: 0; margin-left: 0; }
 
 /* Navigation Container */
 .header-right { display: flex; align-items: center; gap: 20px; }
@@ -118,7 +130,6 @@ body {
   background-color: var(--hover-color); transition: width 0.2s ease;
 }
 
-.nav-link:hover::after { width: 100%; }
 .nav-link.active { color: var(--text-color); font-weight: 500; }
 .nav-link.active::after { width: 100%; }
 
