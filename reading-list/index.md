@@ -14,6 +14,7 @@ title: Reading List
 <ul>
   <li><a href="#">The Mathematics of Financial Derivatives</a></li>
   <li><a href="#">An Introduction to the Mathematics of Financial Derivatives</a></li>
+  <li><a href="#">The Elements of Quantitative Investing</a></li>
 </ul>
 
 <h2>Articles</h2>
