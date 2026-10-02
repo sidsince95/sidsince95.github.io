@@ -1,0 +1,228 @@
+---
+layout: default
+title: Statistical Arbitrage on Crypto Tokens
+katex: true
+---
+
+<article class="project-page">
+
+<a href="/projects/" class="back-link"><span class="back-chevron">&#8249;</span> Projects</a>
+
+<h1>Statistical Arbitrage on Crypto Tokens</h1>
+
+<p class="project-standfirst">A mean-reversion strategy on 40 crypto tokens, built from the Avellaneda–Lee (2010) playbook. My first version posted a positive Sharpe ratio and still turned $1 into $0.00000005. This page walks through the idea, the build, what broke, and what the corrected version really shows.</p>
+
+<p class="project-meta"><strong>Context:</strong> Final project, ISyE 6767 Systems Computational Finance, Georgia Tech (December 2025) · <strong>Stack:</strong> Python, NumPy, pandas, scikit-learn · <strong>Data:</strong> hourly FTX prices for 120+ tokens, February 2021 to September 2022</p>
+
+<h2>The idea</h2>
+
+<p>Crypto tokens move together. When Bitcoin rallies, most of the market rallies with it. That shared movement is the tide, and it lifts every boat at once. Once you strip the tide out, what remains for each token is its own story: the part of its return that has nothing to do with the market.</p>
+
+<p>Statistical arbitrage bets that this leftover part behaves like a rubber band. It gets stretched by noise, flows and news, and then it tends to snap back. When a token is unusually cheap relative to what the market says it should be, you buy it. When it is unusually rich, you short it. You close the trade once the band relaxes.</p>
+
+<p>Marco Avellaneda and Jeong-Hyun Lee formalised this for US equities in 2010. I applied their method to crypto, trading hourly across a one-year window from 26 September 2021 to 25 September 2022.</p>
+
+<h2>The data</h2>
+
+<p>Two files drive everything. The first holds hourly prices for more than 120 tokens. The second lists, for every hour, the 40 largest tokens by market capitalisation at that moment. The universe therefore changes over time: tokens enter the top 40 and fall out of it.</p>
+
+<p>For every hour \(t\) I look back over a window of \(M = 240\) hours (ten days). I keep only the current top-40 tokens that have at least 80% valid data in that window. Returns are simple hourly returns:</p>
+
+\[R_{i,t} = \frac{S_{i,t} - S_{i,t-1}}{S_{i,t-1}}\]
+
+<h2>The method, in four steps</h2>
+
+<p>The same four steps repeat every hour, 8,760 times.</p>
+
+<h3>Step 1: Find the tides with PCA</h3>
+
+<p>I standardise each token's returns inside the window and compute their correlation matrix. Principal component analysis then finds the directions in which the whole market moves together. I keep the top two eigenvectors \(v^{(1)}\) and \(v^{(2)}\).</p>
+
+<p>To turn an eigenvector into something tradable, each token's loading is divided by its volatility \(\bar{\sigma}_i\). The result is an <em>eigenportfolio</em>, and its return is the factor return:</p>
+
+\[Q^{(j)}_i = \frac{v^{(j)}_i}{\bar{\sigma}_i}, \qquad F_{j,k} = \sum_{i=1}^{N} Q^{(j)}_i \, R_{i,k}\]
+
+<p>The first eigenportfolio behaves like the market. Every token carries a positive weight, and over the year it tracks Bitcoin almost exactly.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">The first eigenportfolio is the crypto market</figcaption>
+  <p class="figure-subtitle">Cumulative return, rebased to 100 on 26 September 2021. Eigenportfolios scaled to unit gross weight.</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/01-eigenportfolios-vs-btc-eth-light.svg" alt="The first eigenportfolio is the crypto market" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/01-eigenportfolios-vs-btc-eth-dark.svg" alt="The first eigenportfolio is the crypto market" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<p>The first eigenportfolio fell 56% over the year, in line with Bitcoin and Ether. The second went the other way and rose 60%. It is a relative-value factor: long some tokens, short others.</p>
+
+<p>The weights show the same thing from another angle. The first eigenportfolio spreads positive weight across the whole universe, with Bitcoin the largest. The second concentrates on a handful of tokens, some held long and some short.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">Eigenportfolio weights at the start of the test period</figcaption>
+  <p class="figure-subtitle">26 September 2021, 12:00 UTC. Share of gross weight; blue is long, red is short.</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/02-weights-2021-09-26-light.svg" alt="Eigenportfolio weights at the start of the test period" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/02-weights-2021-09-26-dark.svg" alt="Eigenportfolio weights at the start of the test period" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">Eigenportfolio weights mid-way through</figcaption>
+  <p class="figure-subtitle">15 April 2022, 20:00 UTC. Share of gross weight; blue is long, red is short.</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/02-weights-2022-04-15-light.svg" alt="Eigenportfolio weights mid-way through" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/02-weights-2022-04-15-dark.svg" alt="Eigenportfolio weights mid-way through" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<p>The second factor tends to lean heavily on a few thinly traded, exchange-linked tokens such as LEO and CEL. That makes it less stable from hour to hour than the market factor, and it is a hint that a liquidity screen would help.</p>
+
+<h3>Step 2: Strip out the tides</h3>
+
+<p>For each token I regress its returns in the window on the two factor returns:</p>
+
+\[R_{i,k} = \beta_{i,0} + \beta_{i,1} F_{1,k} + \beta_{i,2} F_{2,k} + \varepsilon_{i,k}\]
+
+<p>The betas measure how much the token rides each tide. The residual \(\varepsilon_{i,k}\) is its idiosyncratic return, the part that is purely about that token.</p>
+
+<h3>Step 3: Model the residual as a rubber band</h3>
+
+<p>Adding up the residuals gives a running total, which measures how far the band is stretched:</p>
+
+\[X_{i,\ell} = \sum_{n=0}^{\ell} \varepsilon_{i,\,t-M+n}\]
+
+<p>The mathematical rubber band is the Ornstein–Uhlenbeck process. It is pulled back towards an equilibrium level \(m\) at speed \(\kappa\) while random shocks keep jostling it. I estimate it through an AR(1) regression, which is simply its discrete-time version:</p>
+
+\[X_{\ell+1} = a + b\,X_\ell + \zeta_{\ell+1}\]
+
+<p>The AR(1) coefficients translate directly into the OU parameters, with \(\Delta t\) equal to one hour expressed in years:</p>
+
+\[\kappa = -\frac{\ln b}{\Delta t}, \qquad m = \frac{a}{1-b}, \qquad \sigma_{\text{eq}} = \sqrt{\frac{\operatorname{Var}(\zeta)}{1-b^2}}\]
+
+<p>A coefficient \(b\) close to 1 means a weak pull, where the band barely snaps back. Fits with \(b \ge 0.999\) show no usable mean reversion, so I discard them.</p>
+
+<h3>Step 4: Score the stretch and trade it</h3>
+
+<p>The s-score measures how many equilibrium standard deviations the band currently sits from its resting point:</p>
+
+\[s_i = \frac{X_{i,\text{last}} - m_i}{\sigma_{\text{eq},i}}\]
+
+<p>I subtract the cross-sectional average each hour so the scores are centred on zero. The trading rules follow the paper. Buy when \(s < -1.25\) (too cheap) and close the long once \(s > -0.50\). Short when \(s > +1.25\) (too rich) and close once \(s < +0.75\). Every signal acts on the following hour's return, so the backtest never peeks at the future.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">Bitcoin and Ether s-scores in the first month</figcaption>
+  <p class="figure-subtitle">Hourly s-score, 26 September to 25 October 2021. Shaded bands are the zones where a position opens.</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/03-s-scores-btc-eth-light.svg" alt="Bitcoin and Ether s-scores in the first month" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/03-s-scores-btc-eth-dark.svg" alt="Bitcoin and Ether s-scores in the first month" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<h2>How the code is organised</h2>
+
+<p>The whole pipeline lives in a single Python script built around three classes. <code>DataHandler</code> loads prices, computes returns, and builds each hour's filtered window. <code>FactorModel</code> runs the PCA and produces eigenportfolio weights and factor returns. <code>OUProcess</code> runs the factor regression, fits the AR(1), maps it to OU parameters, and returns an s-score. A backtest driver loops over the 8,760 hours, applies the trading rules, and writes the signals, weights, performance statistics and charts. Keeping these pieces separate made it easy to find and fix problems later, which turned out to matter.</p>
+
+<h2>The first result: a positive Sharpe ratio, and total ruin</h2>
+
+<p>My submitted version reported a Sharpe ratio of 0.13 and a maximum drawdown of −100%. On average the strategy made money every hour. Compounded, it lost essentially everything: $1 invested at the start was worth $0.00000005 at the end.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">A positive Sharpe ratio did not save version one</figcaption>
+  <p class="figure-subtitle">Value of $1 invested at the start of the test period, log scale</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/04-equity-v1-vs-v2-light.svg" alt="A positive Sharpe ratio did not save version one" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/04-equity-v1-vs-v2-dark.svg" alt="A positive Sharpe ratio did not save version one" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<p>At the time I put this down to missing transaction costs. When I revisited the project, the real explanation turned out to be three implementation mistakes.</p>
+
+<h2>What went wrong</h2>
+
+<h3>Every position was sized as if it were the whole portfolio</h3>
+
+<p>Each open position was worth one unit of capital, and on average 23 positions were open at once. That is roughly 23 times leverage on a portfolio worth 1. The portfolio moved more than 10% in about one hour out of every twelve.</p>
+
+<p>This explains how a positive average return can coexist with ruin. A compounded portfolio grows at roughly its mean return minus half its variance:</p>
+
+\[\text{growth rate per hour} \approx \mu - \tfrac{1}{2}\sigma^2\]
+
+<p>Version one averaged \(\mu \approx 0.009\%\) per hour, with \(\sigma \approx 6.3\%\) per hour. The volatility drag \(\tfrac{1}{2}\sigma^2 \approx 0.20\%\) per hour was more than twenty times the drift. The Sharpe ratio measures the average and cannot see the drag, but the drag is what compounding feels.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">Proper sizing shrinks hourly swings eighteen-fold</figcaption>
+  <p class="figure-subtitle">Distribution of hourly strategy returns, extreme 0.2% trimmed for display</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/05-return-histograms-light.svg" alt="Proper sizing shrinks hourly swings eighteen-fold" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/05-return-histograms-dark.svg" alt="Proper sizing shrinks hourly swings eighteen-fold" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<h3>Positions were orphaned when tokens left the universe</h3>
+
+<p>The trading loop only updated tokens that were in that hour's top-40 window. When a token dropped out, its position froze. It kept earning and losing money, but the model never looked at it again and never closed it. More than a third of all position-hours (36%) sat in tokens the model had stopped tracking. One token, C98, was held for 8,588 of the 8,760 hours.</p>
+
+<figure class="project-figure">
+  <figcaption class="figure-title">More than a third of version one's book was on autopilot</figcaption>
+  <p class="figure-subtitle">Open positions per hour in version one, daily average</p>
+  <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/06-v1-orphaned-positions-light.svg" alt="More than a third of version one's book was on autopilot" loading="lazy">
+  <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/06-v1-orphaned-positions-dark.svg" alt="More than a third of version one's book was on autopilot" loading="lazy">
+  <p class="figure-source">FTX hourly prices; author's calculations</p>
+</figure>
+
+<h3>The eigenportfolios were never normalised</h3>
+
+<p>Dividing each loading by an hourly volatility of 1–5% inflates the weights, which summed to around 600. The first factor's return was therefore about 600 times the average token's move. This did not affect the regressions, because rescaling a regressor leaves its residuals unchanged. It did make the original factor chart unreadable. Scaling each eigenportfolio to unit gross weight fixed it.</p>
+
+<h2>After the fixes: honest, and flat</h2>
+
+<p>I changed three things. Positions are now equally weighted so gross exposure is always 1. Any position in a token that leaves the universe is closed. Factor returns are reported on unit-weight eigenportfolios.</p>
+
+<div class="project-table">
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Version one</th>
+      <th>Version two</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total return</td>
+      <td class="num">−100%</td>
+      <td class="num">−5.6%</td>
+    </tr>
+    <tr>
+      <td>Annualised Sharpe ratio</td>
+      <td class="num">0.13</td>
+      <td class="num">−0.02</td>
+    </tr>
+    <tr>
+      <td>Maximum drawdown</td>
+      <td class="num">−100%</td>
+      <td class="num">−26%</td>
+    </tr>
+    <tr>
+      <td>Annualised volatility</td>
+      <td class="num">593%</td>
+      <td class="num">32%</td>
+    </tr>
+    <tr>
+      <td>Average open positions</td>
+      <td class="num">23</td>
+      <td class="num">15</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>The corrected strategy survives, but it has no edge: the mean hourly return is essentially zero. Costs make things worse. The strategy turns over its book roughly 1,100 times a year, so a cost of just 5 basis points per trade would have cut the return to −46%.</p>
+
+<h2>What I take away</h2>
+
+<p>The most useful lesson was the gap between the arithmetic average and compounded wealth. A Sharpe ratio built from average returns can look respectable while the portfolio underneath is being destroyed by its own volatility. Position sizing is not a detail to add after the signal works. It decides whether the signal can be felt at all.</p>
+
+<p>The second lesson is about bookkeeping. A dynamic universe needs an explicit rule for what happens to a position when its asset leaves, and it is exactly the kind of bug that is invisible until you count.</p>
+
+<p>On the signal itself, mean reversion in hourly crypto residuals did not pay over this year, which was a brutal bear market that included the Terra collapse. If I took this further, I would try four things. First, require faster mean reversion, since the paper insists the reversion time be short relative to the estimation window. Second, add a liquidity screen. Third, scale signals by trading volume, as Avellaneda and Lee do. Fourth, trade less often so that turnover does not eat whatever edge exists.</p>
+
+<h2>Reference</h2>
+
+<p>Avellaneda, M., &amp; Lee, J.-H. (2010). Statistical arbitrage in the US equities market. <em>Quantitative Finance</em>, 10(7), 761–778.</p>
+
+</article>

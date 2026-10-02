@@ -205,3 +205,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Staging folder for the stat-arb project page (do not publish)
+_stat-arb-page/
+
+# Jekyll local build output
+_site/
+.jekyll-cache/
