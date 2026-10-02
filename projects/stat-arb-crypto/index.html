@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Statistical Arbitrage on Crypto Tokens
+title: A Stat Arb on Crypto Tokens
 katex: true
 ---
 
@@ -8,11 +8,13 @@ katex: true
 
 <a href="/projects/" class="back-link"><span class="back-chevron">&#8249;</span> Projects</a>
 
-<h1>Statistical Arbitrage on Crypto Tokens</h1>
+<h1>A Stat Arb on Crypto Tokens</h1>
 
 <p class="project-standfirst">A mean-reversion strategy on 40 crypto tokens, built from the Avellaneda–Lee (2010) playbook. My first version posted a positive Sharpe ratio and still turned $1 into $0.00000005. This page walks through the idea, the build, what broke, and what the corrected version really shows.</p>
 
-<p class="project-meta"><strong>Context:</strong> Final project, ISyE 6767 Systems Computational Finance, Georgia Tech (December 2025) · <strong>Stack:</strong> Python, NumPy, pandas, scikit-learn · <strong>Data:</strong> hourly FTX prices for 120+ tokens, February 2021 to September 2022</p>
+<p class="project-meta"><strong>Context:</strong> Final project, ISyE 6767 Systems Computational Finance, Georgia Tech (August–December 2025)<br>
+<strong>Stack:</strong> Python, NumPy, pandas, scikit-learn<br>
+<strong>Data:</strong> hourly FTX prices for 120+ tokens, February 2021 to September 2022</p>
 
 <h2>The idea</h2>
 
@@ -45,11 +47,14 @@ katex: true
 <p>The first eigenportfolio behaves like the market. Every token carries a positive weight, and over the year it tracks Bitcoin almost exactly.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">The first eigenportfolio is the crypto market</figcaption>
-  <p class="figure-subtitle">Cumulative return, rebased to 100 on 26 September 2021. Eigenportfolios scaled to unit gross weight.</p>
+  <figcaption>
+    <span class="figure-label">Figure 1</span>
+    <span class="figure-title">The first eigenportfolio is the crypto market</span>
+    <span class="figure-subtitle">Cumulative return, rebased to 100 on 26 September 2021. Eigenportfolios scaled to unit gross weight.</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/01-eigenportfolios-vs-btc-eth-light.svg" alt="The first eigenportfolio is the crypto market" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/01-eigenportfolios-vs-btc-eth-dark.svg" alt="The first eigenportfolio is the crypto market" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <p>The first eigenportfolio fell 56% over the year, in line with Bitcoin and Ether. The second went the other way and rose 60%. It is a relative-value factor: long some tokens, short others.</p>
@@ -57,19 +62,25 @@ katex: true
 <p>The weights show the same thing from another angle. The first eigenportfolio spreads positive weight across the whole universe, with Bitcoin the largest. The second concentrates on a handful of tokens, some held long and some short.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">Eigenportfolio weights at the start of the test period</figcaption>
-  <p class="figure-subtitle">26 September 2021, 12:00 UTC. Share of gross weight; blue is long, red is short.</p>
+  <figcaption>
+    <span class="figure-label">Figure 2</span>
+    <span class="figure-title">Eigenportfolio weights at the start of the test period</span>
+    <span class="figure-subtitle">26 September 2021, 12:00 UTC. Share of gross weight; blue is long, red is short.</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/02-weights-2021-09-26-light.svg" alt="Eigenportfolio weights at the start of the test period" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/02-weights-2021-09-26-dark.svg" alt="Eigenportfolio weights at the start of the test period" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">Eigenportfolio weights mid-way through</figcaption>
-  <p class="figure-subtitle">15 April 2022, 20:00 UTC. Share of gross weight; blue is long, red is short.</p>
+  <figcaption>
+    <span class="figure-label">Figure 3</span>
+    <span class="figure-title">Eigenportfolio weights mid-way through</span>
+    <span class="figure-subtitle">15 April 2022, 20:00 UTC. Share of gross weight; blue is long, red is short.</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/02-weights-2022-04-15-light.svg" alt="Eigenportfolio weights mid-way through" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/02-weights-2022-04-15-dark.svg" alt="Eigenportfolio weights mid-way through" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <p>The second factor tends to lean heavily on a few thinly traded, exchange-linked tokens such as LEO and CEL. That makes it less stable from hour to hour than the market factor, and it is a hint that a liquidity screen would help.</p>
@@ -107,11 +118,14 @@ katex: true
 <p>I subtract the cross-sectional average each hour so the scores are centred on zero. The trading rules follow the paper. Buy when \(s < -1.25\) (too cheap) and close the long once \(s > -0.50\). Short when \(s > +1.25\) (too rich) and close once \(s < +0.75\). Every signal acts on the following hour's return, so the backtest never peeks at the future.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">Bitcoin and Ether s-scores in the first month</figcaption>
-  <p class="figure-subtitle">Hourly s-score, 26 September to 25 October 2021. Shaded bands are the zones where a position opens.</p>
+  <figcaption>
+    <span class="figure-label">Figure 4</span>
+    <span class="figure-title">Bitcoin and Ether s-scores in the first month</span>
+    <span class="figure-subtitle">Hourly s-score, 26 September to 25 October 2021. Shaded bands are the zones where a position opens.</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/03-s-scores-btc-eth-light.svg" alt="Bitcoin and Ether s-scores in the first month" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/03-s-scores-btc-eth-dark.svg" alt="Bitcoin and Ether s-scores in the first month" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <h2>How the code is organised</h2>
@@ -123,11 +137,14 @@ katex: true
 <p>My submitted version reported a Sharpe ratio of 0.13 and a maximum drawdown of −100%. On average the strategy made money every hour. Compounded, it lost essentially everything: $1 invested at the start was worth $0.00000005 at the end.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">A positive Sharpe ratio did not save version one</figcaption>
-  <p class="figure-subtitle">Value of $1 invested at the start of the test period, log scale</p>
+  <figcaption>
+    <span class="figure-label">Figure 5</span>
+    <span class="figure-title">A positive Sharpe ratio did not save version one</span>
+    <span class="figure-subtitle">Value of $1 invested at the start of the test period, log scale</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/04-equity-v1-vs-v2-light.svg" alt="A positive Sharpe ratio did not save version one" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/04-equity-v1-vs-v2-dark.svg" alt="A positive Sharpe ratio did not save version one" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <p>At the time I put this down to missing transaction costs. When I revisited the project, the real explanation turned out to be three implementation mistakes.</p>
@@ -145,11 +162,14 @@ katex: true
 <p>Version one averaged \(\mu \approx 0.009\%\) per hour, with \(\sigma \approx 6.3\%\) per hour. The volatility drag \(\tfrac{1}{2}\sigma^2 \approx 0.20\%\) per hour was more than twenty times the drift. The Sharpe ratio measures the average and cannot see the drag, but the drag is what compounding feels.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">Proper sizing shrinks hourly swings eighteen-fold</figcaption>
-  <p class="figure-subtitle">Distribution of hourly strategy returns, extreme 0.2% trimmed for display</p>
+  <figcaption>
+    <span class="figure-label">Figure 6</span>
+    <span class="figure-title">Proper sizing shrinks hourly swings eighteen-fold</span>
+    <span class="figure-subtitle">Distribution of hourly strategy returns, extreme 0.2% trimmed for display</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/05-return-histograms-light.svg" alt="Proper sizing shrinks hourly swings eighteen-fold" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/05-return-histograms-dark.svg" alt="Proper sizing shrinks hourly swings eighteen-fold" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <h3>Positions were orphaned when tokens left the universe</h3>
@@ -157,11 +177,14 @@ katex: true
 <p>The trading loop only updated tokens that were in that hour's top-40 window. When a token dropped out, its position froze. It kept earning and losing money, but the model never looked at it again and never closed it. More than a third of all position-hours (36%) sat in tokens the model had stopped tracking. One token, C98, was held for 8,588 of the 8,760 hours.</p>
 
 <figure class="project-figure">
-  <figcaption class="figure-title">More than a third of version one's book was on autopilot</figcaption>
-  <p class="figure-subtitle">Open positions per hour in version one, daily average</p>
+  <figcaption>
+    <span class="figure-label">Figure 7</span>
+    <span class="figure-title">More than a third of version one's book was on autopilot</span>
+    <span class="figure-subtitle">Open positions per hour in version one, daily average</span>
+  </figcaption>
   <img class="chart chart-light" src="/assets/projects/stat-arb-crypto/06-v1-orphaned-positions-light.svg" alt="More than a third of version one's book was on autopilot" loading="lazy">
   <img class="chart chart-dark" src="/assets/projects/stat-arb-crypto/06-v1-orphaned-positions-dark.svg" alt="More than a third of version one's book was on autopilot" loading="lazy">
-  <p class="figure-source">FTX hourly prices; author's calculations</p>
+  <p class="figure-source">Source: FTX hourly prices</p>
 </figure>
 
 <h3>The eigenportfolios were never normalised</h3>
@@ -177,8 +200,8 @@ katex: true
   <thead>
     <tr>
       <th></th>
-      <th>Version one</th>
-      <th>Version two</th>
+      <th class="num">Version one</th>
+      <th class="num">Version two</th>
     </tr>
   </thead>
   <tbody>
@@ -221,8 +244,12 @@ katex: true
 
 <p>On the signal itself, mean reversion in hourly crypto residuals did not pay over this year, which was a brutal bear market that included the Terra collapse. If I took this further, I would try four things. First, require faster mean reversion, since the paper insists the reversion time be short relative to the estimation window. Second, add a liquidity screen. Third, scale signals by trading volume, as Avellaneda and Lee do. Fourth, trade less often so that turnover does not eat whatever edge exists.</p>
 
-<h2>Reference</h2>
+<h2>References</h2>
 
-<p>Avellaneda, M., &amp; Lee, J.-H. (2010). Statistical arbitrage in the US equities market. <em>Quantitative Finance</em>, 10(7), 761–778.</p>
+<ul>
+  <li>Avellaneda, M., &amp; Lee, J.-H. (2010). Statistical arbitrage in the US equities market. <em>Quantitative Finance</em>, 10(7), 761–778.</li>
+</ul>
+
+<a href="/projects/" class="back-link back-link-bottom"><span class="back-chevron">&#8249;</span> Back to Projects</a>
 
 </article>

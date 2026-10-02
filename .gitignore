@@ -212,3 +212,6 @@ _stat-arb-page/
 # Jekyll local build output
 _site/
 .jekyll-cache/
+
+# Staging folder for stat-arb page updates (do not publish)
+_stat-arb-update/

@@ -11,8 +11,7 @@ title: Projects
 
 <ul>
   <li>
-    <a href="/projects/stat-arb-crypto/">Statistical Arbitrage on Crypto Tokens</a>
-    <div class="project-summary">A PCA and Ornstein–Uhlenbeck stat-arb strategy on hourly crypto data, and why my first version had a positive Sharpe ratio yet lost everything.</div>
+    <a href="/projects/stat-arb-crypto/">A Stat Arb on Crypto Tokens</a>
   </li>
 </ul>
 
