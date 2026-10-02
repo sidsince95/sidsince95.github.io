@@ -1,0 +1,67 @@
+---
+layout: default
+title: A Market-Making Agent for Prediction Markets, Benchmarked Against the Published Optimum
+katex: true
+---
+
+<article class="project-page">
+
+<a href="/projects/" class="back-link"><span class="back-chevron">&#8249;</span> Projects</a>
+
+<h1>A Market-Making Agent for Prediction Markets, Benchmarked Against the Published Optimum</h1>
+
+<p class="project-standfirst"><strong>Work in progress.</strong> This is my Fall 2026 capstone for Georgia Tech's Practice of QCF course, built with Naveen Kumar Singh, Rithvik Duggireddy and Soumya Ranjan Mohapatra. For now, this page describes the question and the plan. Results will replace it as they come in.</p>
+
+<h2>The idea</h2>
+
+<p>Prediction markets like Kalshi trade contracts that pay $1 if an event happens and $0 if it doesn't. A market maker posts a price to buy and a price to sell, and earns the gap between them. Two things eat into that profit: being stuck holding a pile of contracts when they settle, and trading against people who know more than you do.</p>
+
+<p>There is now a published answer to how to quote optimally. Feil and Nendel (2026) write the problem as a Hamilton–Jacobi–Bellman (HJB) equation and solve it. But "optimal" only holds inside their model, and that model leaves out the two things that tend to hurt most in practice: informed traders and sudden news.</p>
+
+<p>So our question is simple. <strong>How much does the theoretically optimal strategy degrade once informed traders and information shocks are added, and can a reinforcement-learning agent recover some of that loss?</strong></p>
+
+<h2>The plan</h2>
+
+<p><strong>1. Rebuild the benchmark.</strong> Reproduce the paper's model and numerical HJB solution, and check it against their published results before anything else.</p>
+
+<p><strong>2. Break its assumptions on purpose.</strong> Add traders with private information, calibrated to price-impact estimates from 41.6 million Kalshi trades (Bartlett and O'Hara, 2026). Separately, add sudden information jumps (informed by Xi et al., 2026). That gives four test environments: the original model, informed trading only, jumps only, and both together.</p>
+
+<p><strong>3. Train a learner.</strong> A Proximal Policy Optimization (PPO) agent sees the price, its inventory, time to resolution, recent volatility and order flow, and chooses its bid and ask. It optimizes the same objective as the HJB strategy, so the comparison is like-for-like.</p>
+
+<p><strong>4. Compare fairly.</strong> Put the RL agent against the original HJB policy, a recalibrated HJB policy and a simple inventory-and-flow rule, under the same fees, tick sizes and execution delays. Every policy is tested on unseen scenarios across multiple training seeds. We report profit, tail losses, drawdown and inventory exposure, not just average P&amp;L.</p>
+
+<h2>Data</h2>
+
+<p>Kalshi's public API provides trades with direction, minute-level bid/ask candles, and settlement outcomes. We are targeting 50–100 standalone contracts across economics and sports.</p>
+
+<h2>What we're not assuming</h2>
+
+<p>We are not assuming RL wins. If the theoretical strategy holds up under realistic conditions, that is a useful finding too. The goal is to learn where adaptation helps and where the theory is already good enough.</p>
+
+<p>We also stick to one contract at a time. Markets on correlated outcomes, like sports parlays (Rana et al., 2026), are a natural next step but outside this semester's scope.</p>
+
+<h2>Status</h2>
+
+<ul>
+  <li>✓ Proposal</li>
+  <li>Up next: Data pipeline</li>
+  <li>Up next: HJB reproduction</li>
+  <li>Up next: Informed-trading and jump simulator</li>
+  <li>Up next: RL agent</li>
+  <li>Up next: Results and write-up</li>
+</ul>
+
+<p><em>Last updated: October 2026</em></p>
+
+<h2>References</h2>
+
+<ol>
+  <li>Feil, D. and Nendel, M. (2026). <em>Optimal Market Making in Prediction Markets.</em> arXiv:2607.17991. <a href="https://arxiv.org/abs/2607.17991">arxiv.org/abs/2607.17991</a></li>
+  <li>Bartlett, R. and O'Hara, M. (2026). <em>Adverse Selection in Prediction Markets: Evidence from Kalshi.</em> SSRN Working Paper. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6615739">papers.ssrn.com/abstract=6615739</a></li>
+  <li>Xi, W., Moallemi, C. C., Pai, M. and Wang, S. (2026). <em>Volatility in Prediction Markets: A Structural Approach.</em> arXiv:2607.08199. <a href="https://arxiv.org/abs/2607.08199">arxiv.org/abs/2607.08199</a></li>
+  <li>Rana, R., Nadkarni, V., Moshrefi, N. and Viswanath, P. (2026). <em>ParlayMarket: Automated Market Making for Parlay-style Joint Contracts.</em> arXiv:2603.22596. <a href="https://arxiv.org/abs/2603.22596">arxiv.org/abs/2603.22596</a></li>
+</ol>
+
+<a href="/projects/" class="back-link back-link-bottom"><span class="back-chevron">&#8249;</span> Back to Projects</a>
+
+</article>

@@ -351,6 +351,21 @@ footer {
   text-decoration-color: var(--hover-color);
 }
 
+.reading-list-page .project-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  vertical-align: 0.1em;
+  color: var(--text-secondary);
+  background: var(--accent-color);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
 .back-link {
   display: inline-block; font-size: 13px; font-family: var(--font-main);
   color: var(--hover-color); text-decoration: none; margin-bottom: 2.5rem; letter-spacing: 0.02em;
@@ -413,7 +428,8 @@ footer {
   margin: 1.8rem 0 0.7rem 0;
 }
 
-.project-page ul {
+.project-page ul,
+.project-page ol {
   margin: 0 0 1.75rem 1.4rem;
   padding: 0;
 }
