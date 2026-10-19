@@ -2,4 +2,20 @@
 layout: default
 title: Blog Posts
 ---
-<p style="color: var(--text-secondary); font-family: var(--font-main); margin-top: 2rem;">Work in progress. Check back soon.</p>
+
+<div class="reading-list-page">
+
+<a href="/" class="back-link"><span class="back-chevron">&#8249;</span> Back</a>
+
+<h1>Blog Posts</h1>
+
+<ul class="post-list">
+  {% for post in site.posts %}
+  <li>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    <span class="post-list-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>{% if post.description %} · {{ post.description }}{% endif %}</span>
+  </li>
+  {% endfor %}
+</ul>
+
+</div>

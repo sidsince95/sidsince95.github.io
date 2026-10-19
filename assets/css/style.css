@@ -547,3 +547,63 @@ footer {
   overflow-y: hidden;
   padding: 0.25rem 0;
 }
+/* --- BLOG --- */
+.post-list li { margin-bottom: 1.1rem; }
+
+.post-list-meta {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.post h4 {
+  font-family: var(--font-header);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.6rem 0;
+}
+
+.post blockquote {
+  margin: 1.75rem 0;
+  padding: 0 0 0 1.1rem;
+  border-left: 3px solid var(--accent-color);
+}
+
+.post hr {
+  border: none;
+  border-top: 1px solid var(--accent-color);
+  margin: 2.5rem 0;
+}
+
+/* Tables scroll inside their own box so the page never scrolls sideways */
+.post table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.post th,
+.post td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--accent-color);
+  text-align: left;
+  vertical-align: top;
+}
+
+.post thead th {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* MathJax 3: scroll long display equations on small screens */
+.post mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
