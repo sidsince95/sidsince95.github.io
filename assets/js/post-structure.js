@@ -27,14 +27,8 @@
       if (bg) docEl.style.setProperty('--ps-bg', bg);
       docEl.style.setProperty('--ps-fg', getComputedStyle(root).color);
       docEl.style.setProperty('--ps-body-font', getComputedStyle(document.body).fontFamily);
-      /* the one accent color is the site's own link color */
-      var probe = document.createElement('a');
-      probe.href = '#';
-      probe.style.cssText = 'position:absolute;visibility:hidden';
-      root.appendChild(probe);
-      var link = getComputedStyle(probe).color;
-      root.removeChild(probe);
-      if (link) docEl.style.setProperty('--ps-accent', link);
+      var h2 = root.querySelector('h2');
+      if (h2) docEl.style.setProperty('--ps-serif', getComputedStyle(h2).fontFamily);
     }
     syncTheme();
     var mo = new MutationObserver(function () { setTimeout(syncTheme, 30); });
@@ -93,15 +87,24 @@
       else if (current) { current.subs.push(it); it.part = current.item; }
     });
     items.forEach(function (it) { if (it.level === 2) it.part = it; });
+    parts.forEach(function (p, i) { p.item.partNo = i + 1; });
+    items.forEach(function (it) { it.partNo = it.part ? it.part.partNo : 0; });
+
+    /* every top-level block in the post body inherits its Part's accent */
+    var partNo = 0;
+    Array.prototype.forEach.call(root.children, function (child) {
+      if (child.tagName === 'H2' && child.classList.contains('ps-h-part')) {
+        for (var i = 0; i < parts.length; i++) if (parts[i].item.el === child) partNo = parts[i].item.partNo;
+      }
+      if (partNo) child.setAttribute('data-ps-part', partNo);
+    });
 
     function shortStage(it) {
       if (!it.eyebrow) return it.title;
       var m = it.eyebrow.match(/(\d+)\s*$/);
       return m ? m[1] + ' ' + it.title : it.title;
     }
-    function dot(piece) {
-      return piece ? '<span class="ps-toc-dot" data-p="' + piece + '" aria-hidden="true"></span>' : '';
-    }
+    function dot() { return ''; }
     function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
     /* ---------- inline contents ---------- */
@@ -109,7 +112,7 @@
     if (nav && parts.length) {
       var html = '<p class="ps-contents-title">In this post</p><ol>';
       parts.forEach(function (p) {
-        html += '<li><a class="ps-toc-part" href="#' + p.item.el.id + '"><span class="ps-toc-eb">' + esc(p.item.eyebrow || '') + '</span><span>' + esc(p.item.title) + '</span></a>';
+        html += '<li data-ps-part="' + p.item.partNo + '"><a class="ps-toc-part" href="#' + p.item.el.id + '"><span class="ps-toc-eb">' + esc(p.item.eyebrow || '') + '</span><span>' + esc(p.item.title) + '</span></a>';
         if (p.subs.length) {
           html += '<div class="ps-toc-subs">' + p.subs.map(function (s) {
             return '<a href="#' + s.el.id + '">' + dot(s.piece) + esc(shortStage(s)) + '</a>';
@@ -126,7 +129,7 @@
     rail.setAttribute('aria-label', 'Sections');
     var rhtml = '<ol>';
     parts.forEach(function (p) {
-      rhtml += '<li class="ps-rail-part"><a href="#' + p.item.el.id + '" data-id="' + p.item.el.id + '">' + esc((p.item.eyebrow ? p.item.eyebrow + ' · ' : '') + p.item.title) + '</a>';
+      rhtml += '<li class="ps-rail-part" data-ps-part="' + p.item.partNo + '"><a href="#' + p.item.el.id + '" data-id="' + p.item.el.id + '">' + esc((p.item.eyebrow ? p.item.eyebrow + ' · ' : '') + p.item.title) + '</a>';
       if (p.subs.length) {
         rhtml += '<ol>' + p.subs.map(function (s) {
           return '<li class="ps-rail-sub"><a href="#' + s.el.id + '" data-id="' + s.el.id + '"' + (s.piece ? ' data-p="' + s.piece + '"' : '') + '>' + esc(shortStage(s)) + '</a></li>';
@@ -182,6 +185,7 @@
           a.classList.toggle('ps-in', !!active && active.part && id === active.part.el.id);
         });
         if (active) {
+          pill.setAttribute('data-ps-part', active.partNo || 1);
           var part = active.part || active;
           var label = part.eyebrow ? '<b>' + esc(part.eyebrow) + '</b>' : '<b>' + esc(part.title) + '</b>';
           if (active !== part) label += ' · ' + (active.eyebrow ? esc(active.eyebrow) + ' · ' : '') + esc(active.title);

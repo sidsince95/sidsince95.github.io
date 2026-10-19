@@ -70,9 +70,9 @@ This is the master equation for everything that follows. Your estimate equals th
 
 | Piece | What it is | When it misbehaves |
 |---|---|---|
-| <span class="ps-chip" data-p="a">$$(X^T X)^{-1}$$</span> | The inverse of the feature covariance | Features are collinear, so the inverse explodes |
-| <span class="ps-chip" data-p="b">$$X^T \varepsilon$$</span> | The alignment between your features and the noise | An omitted variable or look-ahead leaks into the noise |
-| <span class="ps-chip" data-p="c">$$\varepsilon$$</span> | The noise vector itself | Fat tails, changing variance, or autocorrelation |
+| $$(X^T X)^{-1}$$ | The inverse of the feature covariance | Features are collinear, so the inverse explodes |
+| $$X^T \varepsilon$$ | The alignment between your features and the noise | An omitted variable or look-ahead leaks into the noise |
+| $$\varepsilon$$ | The noise vector itself | Fat tails, changing variance, or autocorrelation |
 
 ### The map for the rest of the post {#map}
 
@@ -99,7 +99,7 @@ Five stages, one per assumption. Each stage follows the same order: **the intuit
 
 ### Stage 1 · Linearity {#stage-1}
 
-<div class="ps-eq" data-stage="1" role="img" aria-label="Stage 1 of 5: the model y equals X beta plus epsilon"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span class="ps-eq-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Stage 1 of 5 · Permission to <b>write</b> the equation</span></div></div>
+<div class="ps-eq" data-stage="1" role="img" aria-label="Stage 1 of 5: the model y equals X beta plus epsilon"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span>Stage 1 of 5 · Permission to <b>write</b> the equation</span></div></div>
 
 Before we ever reach the master equation, we made one move: we replaced $$y$$ with $$X\beta + \varepsilon$$. Linearity is the permission to make that substitution.
 
@@ -134,7 +134,7 @@ When you force it into $$y = X\beta + \varepsilon$$, the missing curve gets shov
 
 ### Stage 2 · Full rank (no multicollinearity) {#stage-2}
 
-<div class="ps-eq" data-stage="2" role="img" aria-label="Stage 2 of 5: the inverse of X transpose X"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span class="ps-eq-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Stage 2 of 5 · Permission to <b>invert</b></span></div></div>
+<div class="ps-eq" data-stage="2" role="img" aria-label="Stage 2 of 5: the inverse of X transpose X"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span>Stage 2 of 5 · Permission to <b>invert</b></span></div></div>
 
 The first piece of the error is $$(X^TX)^{-1}$$. The assumption is $$\operatorname{rank}(X) = k$$: no column is an exact linear combination of the others.
 
@@ -177,7 +177,7 @@ In plain numbers: if the truth is $$y = 3X_1 + 2X_2 + \varepsilon$$ and $$X_1 = 
 
 ### Stage 3 · Strict exogeneity {#stage-3}
 
-<div class="ps-eq" data-stage="3" role="img" aria-label="Stage 3 of 5: X transpose epsilon, the alignment between features and noise"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span class="ps-eq-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Stage 3 of 5 · <b>Average</b> the error</span></div></div>
+<div class="ps-eq" data-stage="3" role="img" aria-label="Stage 3 of 5: X transpose epsilon, the alignment between features and noise"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span>Stage 3 of 5 · <b>Average</b> the error</span></div></div>
 
 Now that the equation exists, does $$\hat{\beta}$$ hit the true $$\beta$$ *on average*? "On average" means taking the expected value, holding the observed $$X$$ fixed:
 
@@ -254,7 +254,7 @@ even though $$x_t$$ and $$\varepsilon_t$$ are uncorrelated on the same day. It o
 
 ### Stage 4 · Spherical errors {#stage-4}
 
-<div class="ps-eq" data-stage="4" role="img" aria-label="Stage 4 of 5: the noise epsilon, squared"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span class="ps-eq-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Stage 4 of 5 · <b>Square</b> the noise to get the variance</span></div></div>
+<div class="ps-eq" data-stage="4" role="img" aria-label="Stage 4 of 5: the noise epsilon, squared"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span>Stage 4 of 5 · <b>Square</b> the noise to get the variance</span></div></div>
 
 Homoskedasticity and no autocorrelation don't show up in $$\hat{\beta} - \beta$$, because by Stage 3 the average error is already zero. They appear the moment you ask a new question: *how much does $$\hat{\beta}$$ bounce around from sample to sample?* That's the variance, and you get it by multiplying the error by its own transpose:
 
@@ -304,7 +304,7 @@ Two things go wrong. The printed t-stats come from the wrong formula, usually to
 
 ### Stage 5 · Normality {#stage-5}
 
-<div class="ps-eq" data-stage="5" role="img" aria-label="Stage 5 of 5: the shape of the noise epsilon"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span class="ps-eq-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>Stage 5 of 5 · Know the <b>shape</b> of the noise</span></div></div>
+<div class="ps-eq" data-stage="5" role="img" aria-label="Stage 5 of 5: the shape of the noise epsilon"><div class="ps-eq-row"><span class="ps-eq-p" data-p="s">&#92;(y = X\beta + \varepsilon&#92;)</span><span class="ps-eq-arrow" aria-hidden="true">→</span><span class="ps-eq-fixed">&#92;(\hat{\beta} = \beta+&#92;)</span><span class="ps-eq-p" data-p="a">&#92;((X^TX)^{-1}&#92;)</span><span class="ps-eq-p" data-p="b">&#92;(X^T&#92;)</span><span class="ps-eq-p" data-p="c">&#92;(\varepsilon&#92;)</span></div><div class="ps-eq-cap"><span>Stage 5 of 5 · Know the <b>shape</b> of the noise</span></div></div>
 
 The last symbol on the far right is the raw noise vector itself. The assumption is
 
@@ -342,11 +342,11 @@ You never have to memorize the list again. Read the equation left to right:
 
 | Stage | Operation | Assumption | What you lose without it |
 |---|---|---|---|
-| <span class="ps-chip" data-p="s">1</span> | Substitute $$y = X\beta + \varepsilon$$ | Linearity | The equation itself; missing structure hides in $$\varepsilon$$ |
-| <span class="ps-chip" data-p="a">2</span> | Invert $$(X^TX)^{-1}$$ | Full rank | Identifiability; weights explode by $$\frac{1}{1-\rho^2}$$ |
-| <span class="ps-chip" data-p="b">3</span> | Average $$X^T\varepsilon$$ | Strict exogeneity | Unbiasedness; the slope points the wrong way |
-| <span class="ps-chip" data-p="c">4</span> | Square $$\varepsilon\varepsilon^T$$ | Homoskedasticity + no autocorrelation | Valid standard errors and efficiency |
-| <span class="ps-chip" data-p="c">5</span> | Shape $$\varepsilon$$ | Normality | Exact inference; optimality of squared loss |
+| 1 | Substitute $$y = X\beta + \varepsilon$$ | Linearity | The equation itself; missing structure hides in $$\varepsilon$$ |
+| 2 | Invert $$(X^TX)^{-1}$$ | Full rank | Identifiability; weights explode by $$\frac{1}{1-\rho^2}$$ |
+| 3 | Average $$X^T\varepsilon$$ | Strict exogeneity | Unbiasedness; the slope points the wrong way |
+| 4 | Square $$\varepsilon\varepsilon^T$$ | Homoskedasticity + no autocorrelation | Valid standard errors and efficiency |
+| 5 | Shape $$\varepsilon$$ | Normality | Exact inference; optimality of squared loss |
 
 ## Part III · The autopsy {#part-3}
 
@@ -354,11 +354,11 @@ In quantitative finance, all of these assumptions are violated, usually at the s
 
 | Breaks | Violation | Where it shows up | What breaks in $$\hat{\beta}$$ | The fix |
 |---|---|---|---|---|
-| <span class="ps-chip" data-p="a">2</span> | Near-multicollinearity | Overlapping signals (5d, 10d, 20d momentum) | Still unbiased, but variance explodes | Ridge, PCA, orthogonalization |
-| <span class="ps-chip" data-p="b">3</span> | Exogeneity | Omitted risk factors, noisy features, price impact | Biased; more data won't fix it | FWL residualization, IV / 2SLS, Kalman filters |
-| <span class="ps-chip" data-p="c">4</span> | Non-spherical errors | Volatility clustering, overlapping horizons | Unbiased but inefficient; fake t-stats | Newey–West / clustered SEs; WLS / GLS |
-| <span class="ps-chip" data-p="c">5</span> | Heavy tails | Flash crashes, earnings jumps, bad ticks | One extreme point hijacks the slope | Huber loss, quantile regression |
-| <span class="ps-chip" data-p="s">all</span> | Non-stationarity | Regime shifts, alpha decay | A static $$\hat{\beta}$$ averages over dead regimes | Exponential weighting, Kalman state models |
+| 2 | Near-multicollinearity | Overlapping signals (5d, 10d, 20d momentum) | Still unbiased, but variance explodes | Ridge, PCA, orthogonalization |
+| 3 | Exogeneity | Omitted risk factors, noisy features, price impact | Biased; more data won't fix it | FWL residualization, IV / 2SLS, Kalman filters |
+| 4 | Non-spherical errors | Volatility clustering, overlapping horizons | Unbiased but inefficient; fake t-stats | Newey–West / clustered SEs; WLS / GLS |
+| 5 | Heavy tails | Flash crashes, earnings jumps, bad ticks | One extreme point hijacks the slope | Huber loss, quantile regression |
+| all | Non-stationarity | Regime shifts, alpha decay | A static $$\hat{\beta}$$ averages over dead regimes | Exponential weighting, Kalman state models |
 
 The last row is the assumption *underneath* all five: that there's one fixed $$\beta$$ to estimate. That one deserves its own post. The other four get a deep dive each.
 
@@ -517,14 +517,14 @@ The key button is **Run 400 backtests**. It simulates 400 datasets where the sig
 <div id="ols-lab-mount"></div>
 <script src="/assets/js/ols-lab.js" defer></script>
 
-What to try, stage by stage:
+What to try:
 
 <div class="ps-trylist" markdown="1">
 
-- <span class="ps-chip" data-p="c">4</span> **Overlapping 10-day returns.** The naive t-stat calls a useless signal significant about 45% of the time. White barely helps, because it fixes only the diagonal of $$\Omega$$. Newey–West brings it down a lot but not to 5%: with 250 rows you have about 25 independent observations, and no formula conjures information that isn't there.
-- <span class="ps-chip" data-p="c">4</span> **Heteroskedastic.** The naive t-stat over-rejects (about 20%); White brings it back near 5%. All three slopes stay roughly unbiased, but WLS has the smallest typical error. That's efficiency.
-- <span class="ps-chip" data-p="c">5</span> **Bad tick.** One corrupted print at the most extreme signal. OLS pivots; Huber barely moves. In the backtests that single point makes the naive t-stat find a "signal" more than half the time, and OLS's typical error is about three times Huber's.
-- <span class="ps-chip" data-p="c">5</span> **Fat tails.** No single disaster, just Student-$$t$$ noise. Every fit looks fine, but Huber's typical error is about 30% smaller than OLS's: BLUE's "linear" fine print.
+- **Overlapping 10-day returns.** The naive t-stat calls a useless signal significant about 45% of the time. White barely helps, because it fixes only the diagonal of $$\Omega$$. Newey–West brings it down a lot but not to 5%: with 250 rows you have about 25 independent observations, and no formula conjures information that isn't there.
+- **Heteroskedastic.** The naive t-stat over-rejects (about 20%); White brings it back near 5%. All three slopes stay roughly unbiased, but WLS has the smallest typical error. That's efficiency.
+- **Bad tick.** One corrupted print at the most extreme signal. OLS pivots; Huber barely moves. In the backtests that single point makes the naive t-stat find a "signal" more than half the time, and OLS's typical error is about three times Huber's.
+- **Fat tails.** No single disaster, just Student-$$t$$ noise. Every fit looks fine, but Huber's typical error is about 30% smaller than OLS's: BLUE's "linear" fine print.
 - **Clean world.** Everything agrees. It's the only world where the default printout tells the whole truth.
 
 </div>
@@ -537,9 +537,9 @@ $$\hat{\beta} - \beta = (X^T X)^{-1} X^T \varepsilon,$$
 
 and rank the assumptions by the damage their failure does:
 
-1. **Exogeneity matters most** <span class="ps-chip" data-p="b">3</span>, because its failure biases $$\hat{\beta}$$ even with infinite data, and you can't see it in the residuals.
-2. **Heavy tails come next** <span class="ps-chip" data-p="c">5</span> in low signal-to-noise data like returns, because the unbounded squared-loss gradient lets a few corrupted ticks dictate your weights.
-3. **Non-spherical errors come third** <span class="ps-chip" data-p="c">4</span>, because autocorrelation and volatility clustering manufacture fake t-stats that trick researchers into deploying noise.
+1. **Exogeneity matters most**, because its failure biases $$\hat{\beta}$$ even with infinite data, and you can't see it in the residuals.
+2. **Heavy tails come next** in low signal-to-noise data like returns, because the unbounded squared-loss gradient lets a few corrupted ticks dictate your weights.
+3. **Non-spherical errors come third**, because autocorrelation and volatility clustering manufacture fake t-stats that trick researchers into deploying noise.
 
 Collinearity and normality matter too, but their damage is visible and fixable: unstable weights you can shrink, and inference you can rescue with more data.
 
