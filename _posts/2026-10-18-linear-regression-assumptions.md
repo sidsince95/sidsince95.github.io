@@ -258,7 +258,7 @@ even though $$x_t$$ and $$\varepsilon_t$$ are uncorrelated on the same day. It o
 
 Homoskedasticity and no autocorrelation don't show up in $$\hat{\beta} - \beta$$, because by Stage 3 the average error is already zero. They appear the moment you ask a new question: *how much does $$\hat{\beta}$$ bounce around from sample to sample?* That's the variance, and you get it by multiplying the error by its own transpose:
 
-$$\operatorname{Var}(\hat{\beta} \mid X) = E\left[ (\hat{\beta} - \beta)(\hat{\beta} - \beta)^T \mid X \right] = (X^T X)^{-1} X^T \, \underbrace{E[\varepsilon \varepsilon^T \mid X]}_{\Omega} \, X (X^T X)^{-1}$$
+$$\begin{aligned} \operatorname{Var}(\hat{\beta} \mid X) &= E\left[ (\hat{\beta} - \beta)(\hat{\beta} - \beta)^T \mid X \right] \\ &= (X^T X)^{-1} X^T \, \underbrace{E[\varepsilon \varepsilon^T \mid X]}_{\Omega} \, X (X^T X)^{-1} \end{aligned}$$
 
 The middle piece, $$\Omega$$, is an $$n \times n$$ grid of every error times every other error:
 
