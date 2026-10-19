@@ -215,3 +215,6 @@ _site/
 
 # Staging folder for stat-arb page updates (do not publish)
 _stat-arb-update/
+
+# macOS Finder metadata
+.DS_Store
