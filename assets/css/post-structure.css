@@ -127,3 +127,11 @@
 .ps-pill:focus-visible{outline:2px solid var(--ps-ink-55);outline-offset:2px}
 
 @media (prefers-reduced-motion:reduce){.ps-rail,.ps-pill,.ps-eq-p,.ps-map-list a{transition:none}}
+
+/* ---------- Wide display equations ---------- */
+/* Slightly smaller math on phones (same breakpoint as the site) so most equations fit. Set on the
+   inner mjx-math because MathJax puts an inline font-size on the container itself. */
+@media (max-width:600px){.ps-root mjx-container[display="true"] > mjx-math{font-size:90%}}
+/* Fade the right edge while an equation still has more to scroll (class toggled by post-structure.js).
+   A mask, not an overlay, so it needs no background color and works in both themes. */
+.ps-root mjx-container.ps-math-more{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent)}

@@ -206,6 +206,23 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     update();
+
+    /* ---------- scroll hint on wide display equations ---------- */
+    var MATH = 'mjx-container[display="true"]';
+    function hintOne(m) {
+      m.classList.toggle('ps-math-more', m.scrollWidth - m.clientWidth - m.scrollLeft > 1);
+    }
+    function hintAll() { Array.prototype.forEach.call(root.querySelectorAll(MATH), hintOne); }
+    /* scroll doesn't bubble, so listen in the capture phase; this also covers equations MathJax adds later */
+    root.addEventListener('scroll', function (e) {
+      if (e.target.matches && e.target.matches(MATH)) hintOne(e.target);
+    }, true);
+    window.addEventListener('resize', hintAll);
+    window.addEventListener('load', hintAll);
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(hintAll);
+    /* MathJax typesets after this runs; the post body resizes when it does */
+    if (window.ResizeObserver) new ResizeObserver(hintAll).observe(root);
+    hintAll();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
