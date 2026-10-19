@@ -157,7 +157,9 @@ Geometrically, OLS projects the vector $$y$$ onto the space spanned by your feat
 
 The $$^{-1}$$ makes this piece a **denominator**. When features become collinear, $$X^TX$$ collapses toward zero, so its inverse blows up and *magnifies* the noise. Take two standardized features with correlation $$\rho$$:
 
-$$X^T X = \begin{bmatrix} 1 & \rho \\ \rho & 1 \end{bmatrix}, \qquad (X^T X)^{-1} = \frac{1}{1 - \rho^2} \begin{bmatrix} 1 & -\rho \\ -\rho & 1 \end{bmatrix}$$
+$$X^T X = \begin{bmatrix} 1 & \rho \\ \rho & 1 \end{bmatrix}$$
+
+$$(X^T X)^{-1} = \frac{1}{1 - \rho^2} \begin{bmatrix} 1 & -\rho \\ -\rho & 1 \end{bmatrix}$$
 
 Watch the multiplier $$\frac{1}{1-\rho^2}$$:
 
@@ -391,7 +393,11 @@ The estimator stays unbiased and the in-sample fit looks great, but the weights 
 
 Trade a little bias for a large cut in variance:
 
-$$\min_{\beta} \; \Vert y - X\beta \Vert_2^2 + \gamma \Vert \beta \Vert_2^2 \quad\Longrightarrow\quad \hat{\beta}_{\text{Ridge}} = (X^T X + \gamma I)^{-1} X^T y$$
+$$\min_{\beta} \; \Vert y - X\beta \Vert_2^2 + \gamma \Vert \beta \Vert_2^2$$
+
+which has the solution
+
+$$\hat{\beta}_{\text{Ridge}} = (X^T X + \gamma I)^{-1} X^T y$$
 
 Adding $$\gamma I$$ shifts every eigenvalue from $$\lambda_j$$ to $$\lambda_j + \gamma$$, so the total variance becomes $$\sigma^2 \sum_j \frac{\lambda_j}{(\lambda_j + \gamma)^2}$$. It stays bounded however close $$\lambda_j$$ gets to zero: a floor under the eigenvalues so they can't explode on inversion.
 
